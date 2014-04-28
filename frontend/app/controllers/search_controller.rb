@@ -4,6 +4,7 @@ class SearchController < ApplicationController
 
   def advanced_search
     @criteria = params_for_backend_search
+
     terms = (0..2).collect{|i|
       term = search_term(i)
 

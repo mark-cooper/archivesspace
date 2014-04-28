@@ -39,6 +39,29 @@ module SearchHelper
   end
 
 
+  def default_advanced_search_fields
+    [{"i" => 0}, {"i" => 1}]
+  end
+
+
+  def advanced_search_fields
+    return default_advanced_search_fields if !params["advanced"]
+
+    indexes = params.keys.collect{|k| k[/^v(?<index>[\d]+)/, "index"]}.compact.sort{|a,b| a.to_i <=> b.to_i}
+
+    return default_advanced_search_fields if indexes.empty?
+
+    indexes.map {|i|
+      {
+        "i" => i.to_i,
+        "op" => params["op#{i}"],
+        "f" => params["f#{i}"],
+        "v" => params["v#{i}"],
+      }
+    }
+  end
+
+
   def allow_multi_select?
     @show_multiselect_column
   end
