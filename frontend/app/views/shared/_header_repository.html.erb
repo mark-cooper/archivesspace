@@ -68,6 +68,8 @@
                   <% if user_can?('update_classification_record') %>
                     <li><%= link_to I18n.t("classification._singular"), :controller => :classifications, :action => :new %></li>
                   <% end %>
+                  <li class="divider"></li>
+                  <li><%= link_to I18n.t("job._plural"), :controller => :jobs, :action => :index %></li>
                 </ul>
               </li>
             <% end %>
@@ -77,6 +79,8 @@
                   <input id="global-search-box" type="text" class="span2" placeholder="<%= I18n.t("navbar.search_placeholder") %>" name="q" value="<%= params[:q] %>"/>
                   <div class="btn-group">
                     <button id="global-search-button" class="btn"><span class=" icon-search"></span></button>
+                    <%= link_to "<span class='icon-chevron-down'></span>".html_safe, { :advanced => nil }, { :class => "btn search-switcher last", :style => params["advanced"]?"display:none":"" } %>
+                    <%= link_to "<span class='icon-chevron-up'></span>".html_safe, { :advanced => true }, { :class => "btn search-switcher last", :style => params["advanced"]?"":"display:none" } %>
                   </div>
                 </div>
               <% end %>
@@ -134,4 +138,7 @@
     </div>
   </div><!-- /navbar-inner -->
 </div>
+
+<div class="advanced-search-container <% if params["advanced"].blank? or params["advanced"]  === 'false' %>hide<% end %>">
+<%= render_aspace_partial :partial => "shared/advanced_search" %>
 </div>

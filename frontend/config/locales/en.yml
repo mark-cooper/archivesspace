@@ -132,6 +132,12 @@ en:
       classification_uri: Classification
       location_uris: Location
       agents: Agent
+      creators: Creator
+      fullrecord: Keyword
+      subjects_text: Subject
+      title: Title
+      creators_text: Creator
+      notes: Notes
 
   search_sorting:
     sort_by: "Sort by:"
@@ -171,6 +177,20 @@ en:
     digital_object_id: Digital Object ID
     digital_object_type: Digital Object Type
     publish: Publish
+
+  advanced_search:
+    operator:
+      AND: And
+      OR: Or
+      NOT: Not
+    button_text: Search
+    reset: Clear
+    nav_switcher:
+      show: Show Advanced
+      hide: Hide Advanced
+    index_switcher:
+      show: Show Advanced Search
+      hide: Hide Advanced Search
 
   become-user:
     become-user: Become User
