@@ -83,11 +83,6 @@
             </li>
           </ul>
           <ul class="nav pull-right">
-            <% if user_can?('update_archival_record') %>
-              <li><%= link_to I18n.t("job._plural"), :controller => :jobs, :action => :index %></li>
-            <% end %>
-
-            <li><%= link_to I18n.t("navbar.list_reports"), :controller => :reports, :action => :index %></li>
 
             <% if Plugins.repository_menu_items.any? {|plugin| has_permission_for_controller?(session, plugin)} %>
               <li class="dropdown plugin-container">
@@ -103,32 +98,38 @@
             <% end %>
 
             <li class=" dropdown repo-container">
-              <div <% if user_can?('manage_repository') %>class="input-append"<% end %>>
+              <div class="input-append">
                 <span class="inset-label">
                     <span class="repository-label has-popover" data-trigger="hover" data-placement="bottom" data-html='true' data-title="<span class='icon-hdd'></span> <%= CGI::escapeHTML(current_repo['repo_code']) %>" data-content="<%= CGI::escapeHTML(current_repo['name']) %>">
                       <span class="icon-hdd"></span><span class="current-repository-id"><% if current_repo %><%= current_repo['repo_code'] %><% end %></span>
                     </span>
                 </span>
-                <% if user_can?('manage_repository') || user_can?('transfer_repository') %>
-                  <a class="btn dropdown-toggle last" data-toggle="dropdown" href="#"><span class="icon-cog"></span> <span class="caret"></span></a>
-                  <ul class="dropdown-menu pull-right">
-                    <% if user_can?('manage_repository') %>
-                      <li><%= link_to I18n.t("navbar.manage_groups"), :controller => :groups, :action => :index %></li>
-                      <li><%= link_to I18n.t("user._frontend.section.manage_access"), :controller => :users, :action => :manage_access %></li>
-                      <li><%= link_to I18n.t("navbar.repo_preferences"), :controller => :preferences, :action => :edit, :id => 0, :repo => true %></li>
-                    <% end %>
-                    <% if user_can?('transfer_repository') && @repositories.length > 1 %>
-                      <li><%= link_to I18n.t("repository._frontend.section.transfer"), :controller => :repositories, :action => :transfer, :id => session[:repo_id] %></li>
-                    <% end %>
-                  </ul>
-                <% end %>
-              </div>
-            </li>
-            <% if ArchivesSpaceHelp.enabled? %>
-              <li><%= link_to_help :link_opts => {"data-placement" => (session[:user] ? "left" : "bottom")} %></li>
-            <% end %>
-          </ul>
-        <% end %>
+                <a class="btn dropdown-toggle last" data-toggle="dropdown" href="#"><span class="icon-cog"></span> <span class="caret"></span></a>
+                <ul class="dropdown-menu pull-right">
+                  <% if user_can?('manage_repository') %>
+                    <li><%= link_to I18n.t("navbar.manage_groups"), :controller => :groups, :action => :index %></li>
+                    <li><%= link_to I18n.t("user._frontend.section.manage_access"), :controller => :users, :action => :manage_access %></li>
+                    <li><%= link_to I18n.t("navbar.repo_preferences"), :controller => :preferences, :action => :edit, :id => 0, :repo => true %></li>
+                    <li class="divider"></li>
+                  <% end %>
+                  <% if user_can?('transfer_repository') && @repositories.length > 1 %>
+                    <li><%= link_to I18n.t("repository._frontend.section.transfer"), :controller => :repositories, :action => :transfer, :id => session[:repo_id] %></li>
+                    <li class="divider"></li>
+                  <% end %>
+                  <% if user_can?('update_archival_record') %>
+                    <li><%= link_to I18n.t("job._plural"), :controller => :jobs, :action => :index %></li>
+                    <li class="divider"></li>
+                  <% end %>
+
+                  <li><%= link_to I18n.t("navbar.list_reports"), :controller => :reports, :action => :index %></li>
+                </ul>
+              <% end %>
+            </div>
+          </li>
+          <% if ArchivesSpaceHelp.enabled? %>
+            <li><%= link_to_help :link_opts => {"data-placement" => (session[:user] ? "left" : "bottom")} %></li>
+          <% end %>
+        </ul>
       </div><!-- /.nav-collapse -->
     </div>
   </div><!-- /navbar-inner -->
