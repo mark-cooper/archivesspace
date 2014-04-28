@@ -78,4 +78,22 @@ $(function() {
     $(".nav .system-menu").remove();
   }
 
+
+  // Toggle Advanced Search
+  $(".nav .search-switcher").click(function(event) {
+    event.stopPropagation();
+    event.preventDefault();
+
+    $(".nav .search-switcher").toggle();
+    $(".advanced-search-container").slideToggle();
+  });
+
+  $(".search-switcher-hide").click(function(event) {
+    event.stopPropagation();
+    event.preventDefault();
+
+    $(".nav .search-switcher").toggle();
+    $(".advanced-search-container").slideUp();
+  });
+
 });
