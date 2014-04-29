@@ -1334,6 +1334,14 @@ en:
       novalue: No value defined
     user_defined_enum_4:
       novalue: No value defined
+    field_query_field: &field_query_field_definitions
+      creators_text: Creator
+      fullrecord: Keyword
+      notes: Notes
+      subjects_text: Subject
+      title: Title
+    staff_field_query_field:
+      <<: *field_query_field_definitions
   enumeration_names:
     accession_acquisition_type: Accession Acquisition Type
     accession_resource_type: Accession Resource Type
