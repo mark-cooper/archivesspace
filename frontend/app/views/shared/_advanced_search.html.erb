@@ -60,17 +60,19 @@
       <%= link_to I18n.t("advanced_search.index_switcher.hide"), { :advanced => nil }, {:class => "search-switcher-hide"} %>
     </div>
       <% if current_page?(root_url) %>
-        <div class="span3"></div>
+        <div class="span2"></div>
         <div class="span3">
           <button class="btn btn-primary"><%= I18n.t("advanced_search.button_text") %></button>
         </div>
+        <div class="span1"></div>
       <% else %>
-        <div class="span3">
+        <div class="span2">
           <%= link_to I18n.t("advanced_search.reset"), {:controller => :search, :action => :do_search, :advanced => true}, :class => "btn reset-advanced-search pull-right" %>
         </div>
         <div class="span3">
           <button class="btn btn-primary"><%= I18n.t("advanced_search.button_text") %></button>
         </div>
+        <div class="span1"></div>
       <% end %>
     </div>
   </div>
