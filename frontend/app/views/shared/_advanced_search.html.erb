@@ -15,7 +15,7 @@
       <%=select_tag "f${index}", options_for_select(values_for_scope), :id => nil %>
     </div>
     <div class="span1">
-      <button class="btn btn-danger advanced-search-remove-row"><span class="icon icon-trash icon-white"></span></button>
+      <a href="#" class="btn btn-danger advanced-search-remove-row"><span class="icon icon-trash icon-white"></span></a>
     </div>
   </div>
 --></div>
@@ -24,23 +24,23 @@
   <%= hidden_field_tag "advanced", true %>
 
   <div class="advanced-search-row-container">
-    <% advanced_search_fields.each_with_index do |values, i| %>
-      <% field_index = values["i"] %>
+    <% advanced_search_queries.each_with_index do |query_data, i| %>
+      <% field_index = query_data["i"] %>
       <div class="row-fluid">
         <div class="span2">
           <% if i > 0 %>
-            <%=select_tag "op#{field_index}", options_for_select(values_for_operator, values["op"]) %>
+            <%= select_tag "op#{field_index}", options_for_select(values_for_operator, query_data["negated"] ? "NOT" : query_data["op"]) %>
           <% end %>
         </div>
         <div class="span6">
-          <%= text_field_tag "v#{field_index}", values["v"] %>
+          <%= text_field_tag "v#{field_index}", query_data["value"] %>
         </div>
         <div class="span3">
-          <%=select_tag "f#{field_index}", options_for_select(values_for_scope, values["f"]) %>
+          <%= select_tag "f#{field_index}", options_for_select(values_for_scope, query_data["field"]) %>
         </div>
         <div class="span1">
           <% if i > 0 %>
-            <button class="btn btn-danger advanced-search-remove-row"><span class="icon icon-trash icon-white"></span></button>
+            <a href="#" class="btn btn-danger advanced-search-remove-row"><span class="icon icon-trash icon-white"></span></a>
           <% end %>
         </div>
       </div>
@@ -52,7 +52,7 @@
       <hr />
     </div>
     <div class="span1">
-      <button class="btn btn-success advanced-search-add-row"><span class="icon icon-plus icon-white"></span></button>
+      <a href="#" class="btn btn-success advanced-search-add-row"><span class="icon icon-plus icon-white"></span></a>
     </div>
   </div>
   <div class="row-fluid">
