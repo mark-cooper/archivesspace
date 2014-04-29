@@ -595,7 +595,7 @@ module AspaceFormHelper
           i18n_path = context.i18n_for("#{Array(property).last}_#{v}")
         end
 
-        options.push([I18n.t(i18n_path, :default => v), v])
+        options.push([I18n.t(i18n_path), v])
       end
 
       options.sort {|a,b| a[0] <=> b[0]}
@@ -606,9 +606,9 @@ module AspaceFormHelper
     def jsonmodel_enum_for(property)
       defn = jsonmodel_schema_definition(property)
 
-      if defn.has_key?('enum')
+      if defn["enum"]
         defn["enum"]
-      elsif defn.has_key?('dynamic_enum')
+      elsif defn["dynamic_enum"]
         JSONModel.enum_values(defn['dynamic_enum'])
       else
         raise "No enum found for #{property}"
