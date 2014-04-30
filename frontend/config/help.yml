@@ -13,6 +13,7 @@ topics:
   accession_instances: 110
   accession_collection_management: 111
   accession_classification: 112
+  # accession_material_types: 1xx
   accession_user_defined: 113
   # Resource Topics (200-)
   resource: 200
