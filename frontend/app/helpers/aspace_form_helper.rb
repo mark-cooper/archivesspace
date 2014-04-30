@@ -715,7 +715,12 @@ module AspaceFormHelper
         elsif schema["properties"][property].has_key?("enum")
           value = I18n.t("#{prefix}#{jsonmodel_type.to_s}.#{property}_#{value}", :default => value)
         elsif schema["properties"][property]["type"] === "boolean"
-          value = value === true ? "True" : "False"
+          if opts[:hide_boolean_if_false]
+            next unless value
+            value = ""
+          else
+            value = value === true ? "True" : "False"
+          end
         elsif schema["properties"][property]["type"] === "date"
           value = value.blank? ? "" : Date.strptime(value, "%Y-%m-%d")
         elsif schema["properties"][property]["type"] === "array"
