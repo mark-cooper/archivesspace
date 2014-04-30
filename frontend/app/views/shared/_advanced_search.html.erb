@@ -6,13 +6,13 @@
 <div id="template_advanced_search_row"><!--
   <div class="row-fluid">
     <div class="span2">
-      <%= select_tag "op${index}", options_for_select(values_for_operator), :id => nil %>
+      <%= select_tag "op${index}", options_for_select(values_for_operator), :id => "op${index}" %>
     </div>
     <div class="span6">
-      <%= text_field_tag "v${index}", "", :id => nil %>
+      <%= text_field_tag "v${index}", "", :id => "v${index}" %>
     </div>
     <div class="span3">
-      <%=select_tag "f${index}", options_for_select(values_for_scope, JSONModel.enum_default_value("staff_field_query_field")), :id => nil %>
+      <%=select_tag "f${index}", options_for_select(values_for_scope, JSONModel.enum_default_value("staff_field_query_field")), :id => "f${index}" %>
     </div>
     <div class="span1">
       <a href="#" class="btn btn-danger advanced-search-remove-row"><span class="icon icon-trash icon-white"></span></a>
