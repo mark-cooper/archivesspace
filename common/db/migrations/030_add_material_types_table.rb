@@ -14,6 +14,7 @@ Sequel.migration do
 
       Integer :works_of_art
       Integer :audiovisual_materials
+      Integer :books
       Integer :electronic_documents
       Integer :games
       Integer :microforms
@@ -22,7 +23,6 @@ Sequel.migration do
       Integer :photographs
       Integer :realia
       Integer :serials
-      Integer :books
 
       apply_mtime_columns
     end
