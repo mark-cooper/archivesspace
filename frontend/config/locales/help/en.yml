@@ -18,6 +18,7 @@ en:
       accession_instances: Help on Instances
       accession_collection_management: Help on Collection Management
       accession_classification: Help on Classifications
+      accession_material_types: Help on Material Types
       accession_user_defined: Help on User Defined
       # Resource help tooltips
       resource: Help on Resources

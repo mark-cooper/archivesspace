@@ -754,6 +754,11 @@ en:
         update_account: Update Account
         create: Create User
 
+  material_type:
+    _frontend:
+      action:
+        add: Add Material Type Flags
+
   user_defined:
     _frontend:
       action:

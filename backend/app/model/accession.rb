@@ -15,6 +15,7 @@ class Accession < Sequel::Model(:accession)
   include ExternalIDs
   include CollectionManagements
   include Instances
+  include MaterialTypes
   include UserDefineds
   include Classifications
   include AutoGenerator

@@ -38,6 +38,9 @@ en:
         <p>Additional, internal-only information about how the materials described will be or have been processed.</p>
     classification_tooltip: |
         <p>Used for linking the materials described to a Classification or a Classification Term (e.g. a record group system) managed within the application.</p>
+    material_types_tooltip: |
+        <p>Used for identifying the material types of items contained in an Accession.</p>
+
     user_defined_tooltip: |
         <p>User defined fields for recording additional information not captured in other sections of the application.</p>
 
@@ -1654,6 +1657,36 @@ en:
     parent: Parent
     _singular: Collection Management
     _plural: Collection Management
+
+  material_type:
+    works_of_art: Works of Art
+    audiovisual_materials: Audiovisual Materials
+    books: Books
+    electronic_documents: Electronic Documents
+    games: Games
+    microforms: Microforms
+    maps: Maps
+    manuscripts: Manuscripts
+    photographs: Photographs
+    realia: Realia
+    serials: Serials
+    _singular: Material Types
+    _plural: Material Types
+
+  material_types:
+    works_of_art: Works of Art
+    audiovisual_materials: Audiovisual Materials
+    books: Books
+    electronic_documents: Electronic Documents
+    games: Games
+    microforms: Microforms
+    maps: Maps
+    manuscripts: Manuscripts
+    photographs: Photographs
+    realia: Realia
+    serials: Serials
+    _singular: Material Types
+    _plural: Material Types
 
   user_defined:
     boolean_1: Boolean 1

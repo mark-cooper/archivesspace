@@ -96,6 +96,7 @@
       "deaccessions" => {"type" => "array", "items" => {"type" => "JSONModel(:deaccession) object"}},
       "collection_management" => {"type" => "JSONModel(:collection_management) object"},
       "user_defined" => {"type" => "JSONModel(:user_defined) object"},
+      "material_types" => {"type" => "JSONModel(:material_types) object"},
 
       "related_resources" => {
         "type" => "array",
