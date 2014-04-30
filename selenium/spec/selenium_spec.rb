@@ -979,6 +979,24 @@ describe "ArchivesSpace user interface" do
     end
 
 
+    it "can add material type flags to an Accession" do
+      $driver.click_and_wait_until_gone(:link, 'Edit')
+
+      # add a material types sub record
+      $driver.find_element(:css => '#accession_material_types_ .subrecord-form-heading .btn').click
+
+      $driver.find_element(:id => "accession_material_types__realia_").click
+
+      # save changes
+      $driver.click_and_wait_until_gone(:css => "form#accession_form button[type='submit']")
+
+      # check the show page
+      $driver.click_and_wait_until_gone(:link => @exdocs_accession_title)
+      $driver.find_element(:id, "accession_material_types_")
+      $driver.find_element_with_text('//div', /Realia/).should_not be_nil
+    end
+
+
     it "supports adding an event and then returning to the accession" do
       if false
       agent_uri, @agent_name = create_agent("Geddy Lee")

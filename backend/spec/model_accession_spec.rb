@@ -238,6 +238,21 @@ describe 'Accession model' do
   end
 
 
+  it "allows accessions to be created with material type flags" do
+    accession = Accession.create_from_json(build(:json_accession,
+                                                 :material_types =>
+                                                    {
+                                                      "works_of_art" => true,
+                                                      "books" => true,
+                                                    }
+                                                 ),
+                                          :repo_id => $repo_id)
+
+    Accession[accession[:id]].material_type.works_of_art.should eq(1)
+    Accession[accession[:id]].material_type.books.should eq(1)
+  end
+
+
   it "allows accessions to be created with user defined fields" do
     accession = Accession.create_from_json(build(:json_accession,
                                                  :user_defined =>
