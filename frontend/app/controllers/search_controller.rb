@@ -1,3 +1,5 @@
+require 'advanced_query_builder'
+
 class SearchController < ApplicationController
 
   set_access_control  "view_repository" => [:do_search, :advanced_search]
@@ -8,7 +10,7 @@ class SearchController < ApplicationController
     queries = advanced_search_queries.reject{|field| field["value"].blank?}
 
     if not queries.empty?
-      criteria["aq"] = JSONModel(:advanced_query).from_hash({"query" => build_queries(queries)}).to_json
+      criteria["aq"] = AdvancedQueryBuilder.build(queries).to_json
       criteria['facet[]'] = SearchResultData.BASE_FACETS
     end
 
@@ -48,38 +50,6 @@ class SearchController < ApplicationController
       }
       format.html {
       }
-    end
-  end
-
-
-  private
-
-  def build_queries(queries)
-    if queries.length > 1
-      stack = queries.reverse.clone
-
-      while stack.length > 1
-        a = stack.pop
-        b = stack.pop
-
-        stack.push(JSONModel(:boolean_query).from_hash({
-                                                         :op => b["op"],
-                                                         :subqueries => [as_subquery(a), as_subquery(b)]
-                                                       }))
-      end
-
-      stack.pop
-    else
-      JSONModel(:field_query).from_hash(queries[0])
-    end
-  end
-
-
-  def as_subquery(query_data)
-    if query_data.kind_of? JSONModelType
-      query_data
-    else
-      JSONModel(:field_query).from_hash(query_data)
     end
   end
 

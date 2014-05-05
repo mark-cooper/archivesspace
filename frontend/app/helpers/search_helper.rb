@@ -38,6 +38,7 @@ module SearchHelper
     search_params.reject{|k,v| k.blank? or v.blank?}
   end
 
+
   def allow_multi_select?
     @show_multiselect_column
   end
