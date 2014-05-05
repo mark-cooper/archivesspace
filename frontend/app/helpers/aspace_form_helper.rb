@@ -456,7 +456,8 @@ module AspaceFormHelper
     end
 
     def checkbox(name, opts = {}, default = true, force_checked = false)
-      ((obj[name] === true) || obj[name] === "true") ? "True" : "False"
+      ((obj[name] === true) || obj[name] === "true") ? I18n.t("boolean.true")
+                                                     : I18n.t("boolean.false")
     end
 
     def label_with_field(name, field_html, opts = {})
@@ -719,7 +720,7 @@ module AspaceFormHelper
             next unless value
             value = ""
           else
-            value = value === true ? "True" : "False"
+            value = value === true ? I18n.t("boolean.true") : I18n.t("boolean.false")
           end
         elsif schema["properties"][property]["type"] === "date"
           value = value.blank? ? "" : Date.strptime(value, "%Y-%m-%d")
