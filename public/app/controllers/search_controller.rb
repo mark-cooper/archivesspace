@@ -1,3 +1,5 @@
+require 'advanced_query_builder'
+
 class SearchController < ApplicationController
 
   DETAIL_TYPES = ['accession', 'resource', 'archival_object', 'digital_object',
@@ -92,7 +94,7 @@ class SearchController < ApplicationController
     }.compact
 
     if not terms.empty?
-      @criteria["aq"] = JSONModel(:advanced_query).from_hash({"query" => group_queries(terms)}).to_json
+      @criteria["aq"] = AdvancedQueryBuilder.build(terms).to_json
       @criteria['facet[]'] = FACETS
     end
   end
@@ -100,34 +102,6 @@ class SearchController < ApplicationController
   def search_term(i)
     if not params["v#{i}"].blank?
       { :field => params["f#{i}"], :value => params["v#{i}"], :op => params["op#{i}"] }
-    end
-  end
-
-  def group_queries(terms)
-    if terms.length > 1
-      stack = terms.reverse.clone
-
-      while stack.length > 1
-        a = stack.pop
-        b = stack.pop
-
-        stack.push(JSONModel(:boolean_query).from_hash({
-                                                         :op => b[:op],
-                                                         :subqueries => [as_subquery(a), as_subquery(b)]
-                                                       }))
-      end
-
-      stack.pop
-    else
-      JSONModel(:field_query).from_hash(terms[0])
-    end
-  end
-
-  def as_subquery(query_data)
-    if query_data.kind_of? JSONModelType
-      query_data
-    else
-      JSONModel(:field_query).from_hash(query_data)
     end
   end
 
