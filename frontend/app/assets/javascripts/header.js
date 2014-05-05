@@ -78,4 +78,45 @@ $(function() {
     $(".nav .system-menu").remove();
   }
 
+
+  // Toggle Advanced Search
+  var $advancedSearchContainer = $(".advanced-search-container");
+  $(".nav .search-switcher").click(function(event) {
+    event.stopPropagation();
+    event.preventDefault();
+
+    $(".nav .search-switcher").toggle();
+    $advancedSearchContainer.slideToggle();
+  });
+
+  $(".search-switcher-hide").click(function(event) {
+    event.stopPropagation();
+    event.preventDefault();
+
+    $(".nav .search-switcher").toggle();
+    $advancedSearchContainer.slideUp();
+  });
+
+  $advancedSearchContainer.on("click", ".advanced-search-remove-row", function(event) {
+    event.stopPropagation();
+    event.preventDefault();
+
+    $(this).closest(".row-fluid").remove();
+  });
+
+  $advancedSearchContainer.on("click", ".advanced-search-add-row", function(event) {
+    event.stopPropagation();
+    event.preventDefault();
+
+    var index = $(".advanced-search-row-container >.row-fluid").length;
+
+    while ($(":input[name='f"+index+"']", $advancedSearchContainer).length > 0) {
+      index += 1;
+    }
+
+    var row = AS.renderTemplate("template_advanced_search_row", {index: index});
+
+    $(".advanced-search-row-container", $advancedSearchContainer).append(row);
+  });
+
 });
