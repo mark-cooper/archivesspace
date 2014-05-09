@@ -183,6 +183,13 @@ en:
       AND: And
       OR: Or
       NOT: Not
+    date_operator:
+      equal: =
+      greater_than: "&gt;"
+      lesser_than: "&lt;"
+    boolean_field:
+      true_value: "True"
+      false_value: "False"
     button_text: Search
     reset: Clear
     nav_switcher:

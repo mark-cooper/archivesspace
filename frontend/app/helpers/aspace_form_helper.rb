@@ -1,7 +1,8 @@
 module AspaceFormHelper
-  class FormContext
 
-    COMBOBOX_MIN_LIMIT = 50 # if a <select> has equal or more options than this value, output a combobox
+  COMBOBOX_MIN_LIMIT = 50 # if a <select> has equal or more options than this value, output a combobox
+
+  class FormContext
 
     def initialize(name, values_from, parent)
 

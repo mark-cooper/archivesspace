@@ -7,7 +7,7 @@ class SearchController < ApplicationController
   def advanced_search
     criteria = params_for_backend_search
 
-    queries = advanced_search_queries.reject{|field| field["value"].blank?}
+    queries = advanced_search_queries.reject{|field| field["value"].nil? || field["value"] == ""}
 
     if not queries.empty?
       criteria["aq"] = AdvancedQueryBuilder.build(queries).to_json

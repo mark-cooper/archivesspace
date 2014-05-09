@@ -26,7 +26,7 @@ class AdvancedQueryBuilder
 
       stack.pop
     else
-      JSONModel(:field_query).from_hash(@queries[0])
+      as_subquery(@queries[0])
     end
 
     JSONModel(:advanced_query).from_hash({"query" => query})
@@ -38,8 +38,12 @@ class AdvancedQueryBuilder
   def as_subquery(query_data)
     if query_data.kind_of? JSONModelType
       query_data
+    elsif query_data["type"] == "date"
+      JSONModel(:date_field_query).from_hash(query_data)
+    elsif query_data["type"] == "bool"
+      JSONModel(:boolean_field_query).from_hash(query_data)
     else
-      JSONModel(:field_query).from_hash(query_data)
+      JSONModel(:staff_field_query).from_hash(query_data)
     end
   end
 

@@ -3113,8 +3113,8 @@ describe "ArchivesSpace user interface" do
       @shared_keyword_9 = SecureRandom.hex
       @shared_keyword_10 = SecureRandom.hex
 
-      @accession_1_title = create_accession(:title => "#{@shared_keyword_1} #{@shared_keyword_5}")
-      @accession_2_title = create_accession(:title => "#{@shared_keyword_2} #{@shared_keyword_6}")
+      @accession_1_title = create_accession(:title => "#{@shared_keyword_1} #{@shared_keyword_5}", :publish => true)
+      @accession_2_title = create_accession(:title => "#{@shared_keyword_2} #{@shared_keyword_6}", :publish => false)
       @resource_1_title = create_resource(:title => "#{@shared_keyword_1} #{@shared_keyword_7}")[1]
       @resource_2_title = create_resource(:title => "#{@shared_keyword_3} #{@shared_keyword_8}")[1]
       @digital_object_1_title = create_digital_object(:title => "#{@shared_keyword_1} #{@shared_keyword_9}")[1]
@@ -3143,7 +3143,7 @@ describe "ArchivesSpace user interface" do
 
     it "finds matches with one keyword field query" do
       # remove the 2nd row for now
-      $driver.find_element(:css => ".advanced-search-remove-row").click
+      $driver.find_elements(:css => ".advanced-search-remove-row")[1].click
 
       $driver.clear_and_send_keys([:id => "v0"], @shared_keyword_1)
 
@@ -3163,7 +3163,8 @@ describe "ArchivesSpace user interface" do
 
     it "finds single match with two keyword ANDed field queries" do
       # add a 2nd query row
-      $driver.find_element(:css => ".advanced-search-add-row").click
+      $driver.find_element(:css => ".advanced-search-add-row-dropdown").click
+      $driver.find_element(:css => ".advanced-search-add-text-row").click
 
       $driver.clear_and_send_keys([:id => "v0"], @shared_keyword_1)
       $driver.clear_and_send_keys([:id => "v1"], @shared_keyword_5)
@@ -3224,6 +3225,47 @@ describe "ArchivesSpace user interface" do
 
       $driver.find_element(:id => "v0").attribute("value").should eq("")
       $driver.find_element(:id => "v1").attribute("value").should eq("")
+    end
+
+
+    it "filters records based on a boolean search search" do
+      # remove all rows
+      $driver.find_elements(:css => ".advanced-search-remove-row").each {|btn| btn.click}
+
+      # add a boolean field row
+      $driver.find_element(:css => ".advanced-search-add-row-dropdown").click
+      $driver.find_element(:css => ".advanced-search-add-bool-row").click
+
+      # let's only find those that are unpublished
+      $driver.find_element(:id => "f0").select_option("publish")
+      $driver.find_element(:id => "v0").select_option("false")
+
+      $driver.click_and_wait_until_gone(:css => ".advanced-search .btn-primary")
+
+      $driver.find_element_with_text("//td", /#{@accession_2_title}/)
+      $driver.ensure_no_such_element(:xpath, "//td[contains(text(), '#{@accession_1_title}')]")
+    end
+
+
+    it "filters records based on a date field search" do
+      $driver.find_element(:css => ".advanced-search-add-row-dropdown").click
+      $driver.find_element(:css => ".advanced-search-add-date-row").click
+
+      # let's find all records created after 2014
+      $driver.clear_and_send_keys([:id => "v1"], "2012-01-01")
+      $driver.find_element(:id => "op1").select_option("AND")
+      $driver.find_element(:id => "f1").select_option("create_time")
+
+      $driver.click_and_wait_until_gone(:css => ".advanced-search .btn-primary")
+
+      $driver.find_element_with_text("//td", /#{@accession_2_title}/)
+
+      # change to lesser than.. there should be no results!
+      $driver.find_element(:id => "dop1").select_option("lesser_than")
+
+      $driver.click_and_wait_until_gone(:css => ".advanced-search .btn-primary")
+
+      $driver.find_element_with_text('//p[contains(@class, "alert-info")]', /No records found/)
     end
 
 

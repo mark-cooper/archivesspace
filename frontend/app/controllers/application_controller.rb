@@ -508,7 +508,7 @@ class ApplicationController < ActionController::Base
 
   helper_method :default_advanced_search_queries
   def default_advanced_search_queries
-    [{"i" => 0}, {"i" => 1}]
+    [{"i" => 0, "type" => "text"}, {"i" => 1, "type" => "text"}]
   end
 
 
@@ -526,11 +526,20 @@ class ApplicationController < ActionController::Base
         "op" => params["op#{i}"],
         "field" => params["f#{i}"],
         "value" => params["v#{i}"],
+        "type" => params["t#{i}"]
       }
 
       if query["op"] === "NOT"
         query["op"] = "AND"
         query["negated"] = true
+      end
+
+      if query["type"] == "date"
+        query["comparator"] = params["dop#{i}"]
+      end
+
+      if query["type"] == "bool"
+        query["value"] = query["value"] == "true"
       end
 
       query

@@ -200,6 +200,9 @@ $(function() {
   $(document).bind("subrecordcreated.aspace", function(event, object_name, subform) {
     initDateFields(subform);
   });
+  $(document).bind("initdatefields.aspace", function(event, container) {
+    initDateFields(container);
+  });
 });
 
 
@@ -220,6 +223,9 @@ $(function() {
   });
   $(document).bind("subrecordcreated.aspace", function(event, object_name, subform) {
     initComboboxFields(subform);
+  });
+  $(document).bind("initcomboboxfields.aspace", function(event, container) {
+    initComboboxFields(container);
   });
 });
 
