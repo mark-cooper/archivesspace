@@ -94,7 +94,7 @@ class SearchController < ApplicationController
     }.compact
 
     if not terms.empty?
-      @criteria["aq"] = AdvancedQueryBuilder.build(terms).to_json
+      @criteria["aq"] = AdvancedQueryBuilder.new(terms, :text_field_query_type => :field_query).build_query.to_json
       @criteria['facet[]'] = FACETS
     end
   end

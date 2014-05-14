@@ -1,12 +1,8 @@
 class AdvancedQueryBuilder
 
-  def self.build(queries)
-    new(queries).build_query
-  end
-
-
-  def initialize(queries)
+  def initialize(queries, opts = {})
     @queries = queries
+    @opts = opts
   end
 
 
@@ -43,8 +39,12 @@ class AdvancedQueryBuilder
     elsif query_data["type"] == "bool"
       JSONModel(:boolean_field_query).from_hash(query_data)
     else
-      JSONModel(:staff_field_query).from_hash(query_data)
+      JSONModel(text_field_query_type).from_hash(query_data)
     end
+  end
+
+  def text_field_query_type
+    @opts.fetch(:text_field_query_type)
   end
 
 
