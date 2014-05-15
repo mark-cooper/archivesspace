@@ -3143,8 +3143,8 @@ describe "ArchivesSpace user interface" do
 
       @accession_1_title = create_accession(:title => "#{@shared_keyword_1} #{@shared_keyword_5}", :publish => true)
       @accession_2_title = create_accession(:title => "#{@shared_keyword_2} #{@shared_keyword_6}", :publish => false)
-      @resource_1_title = create_resource(:title => "#{@shared_keyword_1} #{@shared_keyword_7}")[1]
-      @resource_2_title = create_resource(:title => "#{@shared_keyword_3} #{@shared_keyword_8}")[1]
+      @resource_1_title = create_resource(:title => "#{@shared_keyword_1} #{@shared_keyword_7}", :publish => false)[1]
+      @resource_2_title = create_resource(:title => "#{@shared_keyword_3} #{@shared_keyword_8}", :publish => true)[1]
       @digital_object_1_title = create_digital_object(:title => "#{@shared_keyword_1} #{@shared_keyword_9}")[1]
       @digital_object_2_title = create_digital_object(:title => "#{@shared_keyword_4} #{@shared_keyword_10}")[1]
 
@@ -3257,21 +3257,39 @@ describe "ArchivesSpace user interface" do
 
 
     it "filters records based on a boolean search search" do
-      # remove all rows
-      $driver.find_elements(:css => ".advanced-search-remove-row").each {|btn| btn.click}
+      # remove one of the text rows
+      $driver.find_elements(:css => ".advanced-search-remove-row")[1].click
+
+      # Lets find all records with keyword 1
+      $driver.clear_and_send_keys([:id => "v0"], @shared_keyword_1)
+      $driver.find_element(:id => "f0").select_option("title")
+
+      $driver.click_and_wait_until_gone(:css => ".advanced-search .btn-primary")
+
+      $driver.find_element_with_text("//td", /#{@accession_1_title}/)
+      $driver.find_element_with_text("//td", /#{@resource_1_title}/)
 
       # add a boolean field row
       $driver.find_element(:css => ".advanced-search-add-row-dropdown").click
       $driver.find_element(:css => ".advanced-search-add-bool-row").click
 
       # let's only find those that are unpublished
-      $driver.find_element(:id => "f0").select_option("publish")
-      $driver.find_element(:id => "v0").select_option("false")
+      $driver.find_element(:id => "f1").select_option("publish")
+      $driver.find_element(:id => "v1").select_option("false")
 
       $driver.click_and_wait_until_gone(:css => ".advanced-search .btn-primary")
 
-      $driver.find_element_with_text("//td", /#{@accession_2_title}/)
+      $driver.find_element_with_text("//td", /#{@resource_1_title}/)
       $driver.ensure_no_such_element(:xpath, "//td[contains(text(), '#{@accession_1_title}')]")
+
+      # now let's flip it to find those that are published
+      $driver.find_element(:id => "v1").select_option("true")
+
+      $driver.click_and_wait_until_gone(:css => ".advanced-search .btn-primary")
+
+      $driver.find_element_with_text("//td", /#{@accession_1_title}/)
+      $driver.ensure_no_such_element(:xpath, "//td[contains(text(), '#{@resource_1_title}')]")
+
     end
 
 
@@ -3280,16 +3298,17 @@ describe "ArchivesSpace user interface" do
       $driver.find_element(:css => ".advanced-search-add-date-row").click
 
       # let's find all records created after 2014
-      $driver.clear_and_send_keys([:id => "v1"], "2012-01-01")
-      $driver.find_element(:id => "op1").select_option("AND")
-      $driver.find_element(:id => "f1").select_option("create_time")
+      $driver.clear_and_send_keys([:id => "v2"], "2012-01-01")
+      $driver.find_element(:id => "op2").select_option("AND")
+      $driver.find_element(:id => "f2").select_option("create_time")
+      $driver.find_element(:id => "dop2").select_option("greater_than")
 
       $driver.click_and_wait_until_gone(:css => ".advanced-search .btn-primary")
 
-      $driver.find_element_with_text("//td", /#{@accession_2_title}/)
+      $driver.find_element_with_text("//td", /#{@accession_1_title}/)
 
       # change to lesser than.. there should be no results!
-      $driver.find_element(:id => "dop1").select_option("lesser_than")
+      $driver.find_element(:id => "dop2").select_option("lesser_than")
 
       $driver.click_and_wait_until_gone(:css => ".advanced-search .btn-primary")
 
