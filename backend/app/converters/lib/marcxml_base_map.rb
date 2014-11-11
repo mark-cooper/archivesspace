@@ -1,5 +1,21 @@
 
 module MarcXMLBaseMap
+
+	#For looking up subject vocab of authority records in 008/11
+	AUTH_SUBJECT_SOURCE_LOOKUP =
+		{
+       'a'=>"Library of Congress Subject Headings",
+       'b'=>"LC subject headings for children's literature",
+       'c'=>"Medical Subject Headings",
+       'd'=>"National Agricultural Library subject authority file",
+       'n'=>"Source not specified",
+       'k'=>"Canadian Subject Headings",
+       'r'=>"Art and Architecture Thesaurus",
+       's'=>"Sears List of Subject Headings",
+       'v'=>"R\u00E9pertoire de vedettes-matic\u00E8re",
+       'z'=>"Source not specified"
+    }
+
   def subject_template(getterms, getsrc)
     {
       :obj => :subject,
@@ -21,21 +37,22 @@ module MarcXMLBaseMap
     end
   end
 
-
-  def sets_subject_source
-    -> node {
-      {
-        '0'=>"Library of Congress Subject Headings",
+  def sets_subject_source(authrecord, auth_source)
+		-> node {
+				if @authrecord == 1 
+					@auth_source
+				else
+      { '0'=>"Library of Congress Subject Headings",
         '1'=>"LC subject headings for children's literature",
         '2'=>"Medical Subject Headings",
         '3'=>"National Agricultural Library subject authority file",
         '4'=>"Source not specified",
         '5'=>"Canadian Subject Headings",
-        '6'=>"R\u00E9pertoire de vedettes-matic\u00E8re"
+        '6'=>"R\u00E9pertoire de vedettes-matic\u00E8re",
       }[node.attr('ind2')] || ( !node.at_xpath("subfield[@code='2']").nil? ? node.at_xpath("subfield[@code='2']").inner_text : 'Source not specified' )
-    }
-  end
-
+			end
+  	}
+	end
 
   def agent_template
     {
@@ -189,7 +206,7 @@ module MarcXMLBaseMap
       :map => {
         # NAMES (CORPORATE)
         "self::datafield" => {
-          :obj => :name_corporate_entity,
+          :obj => :agent_corporate_entity,
           :rel => :names,
           :map => name_corp_map,
         },
@@ -541,8 +558,12 @@ module MarcXMLBaseMap
 
         #LEADER
         "//leader" =>  -> resource, node { 
+					values = node.inner_text.strip
+					@authrecord = 0
+					@auth_source = ''
+					@authrecord = 1 if values[6] == 'z'
+
           if resource.respond_to?(:level) 
-            values = node.inner_text.strip
             resource.level = "item" if  values[7] == 'm'  
           end 
         }, 
@@ -570,6 +591,14 @@ module MarcXMLBaseMap
               resource.dates << date
             end
           end
+
+					if @authrecord == 1
+						auth_key = control[11]
+						@auth_source = AUTH_SUBJECT_SOURCE_LOOKUP[auth_key]
+						if @auth_source.nil?
+							@auth_source = "Source not specified"
+						end
+					end 
         },
 
         # ID_0, ID_1, ID_2, ID_3
@@ -578,6 +607,7 @@ module MarcXMLBaseMap
           resource.id_0 = id unless id.empty?
         },
 
+				#TODO If loading auth records should get authority id out of 010$a
 
         "datafield[@tag='090']" => -> resource, node {
           if resource.id_0.nil? or resource.id_0.empty?
@@ -949,6 +979,9 @@ module MarcXMLBaseMap
         "datafield[@tag='611']" => mix(corp_template, agent_as_subject, corp_variation),
 
         #SUBJECTS
+				#FIXME?  Probably shouldn't load 4xx's as separate subjects, but AS doesn't have see 
+				#references in subject records, only agents
+
         "datafield[@tag='630' or @tag='130' or @tag='430']" => subject_template(
                                                                                 -> node {
                                                                                   terms = []
@@ -964,7 +997,7 @@ module MarcXMLBaseMap
                                                                                   end
                                                                                   terms
                                                                                 },
-                                                                                sets_subject_source),
+                                                                                 sets_subject_source(@authrecord, @auth_source) ),
 
         "datafield[@tag='650' or @tag='150' or @tag='450']" => subject_template(
                                                                                 -> node {
@@ -984,7 +1017,7 @@ module MarcXMLBaseMap
                                                                                   end
                                                                                   terms
                                                                                 },
-                                                                                sets_subject_source),
+                                                                                sets_subject_source(@authrecord, @auth_source) ),
 
         "datafield[@tag='651' or @tag='151' or @tag='451']" => subject_template(
                                                                                 -> node {
@@ -1001,7 +1034,7 @@ module MarcXMLBaseMap
                                                                                   end
                                                                                   terms
                                                                                 },
-                                                                                sets_subject_source),
+                                                                                sets_subject_source(@authrecord, @auth_source) ),
 
         "datafield[@tag='655' or @tag='155' or @tag = '455']" => subject_template(
                                                                                   -> node {
@@ -1020,7 +1053,7 @@ module MarcXMLBaseMap
                                                                                     end
                                                                                     terms
                                                                                   },
-                                                                                  sets_subject_source),
+                                                                                sets_subject_source(@authrecord, @auth_source) ),
 
         "datafield[@tag='656']" => subject_template(
                                                     -> node {
