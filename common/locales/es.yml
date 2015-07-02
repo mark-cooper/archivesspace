@@ -7,7 +7,39 @@
   boolean: 
     "true": "Verdadero"
     "false": "Falso"
-
+	
+  user_defined: &user_defined_attributes
+    boolean_1: Booleano 1
+    boolean_2: Booleano 2
+    boolean_3: Booleano 3
+    integer_1: Entero 1
+    integer_2: Entero 2
+    integer_3: Entero 3
+    real_1: Real 1
+    real_2: Real 2
+    real_3: Real 3
+    string_1: Cadena de caracteres 1
+    string_2: Cadena de caracteres 2
+    string_3: Cadena de caracteres 3
+    string_4: Cadena de caracteres 4
+    text_1: Texto 1
+    text_2: Texto 2
+    text_3: Texto 3
+    text_4: Texto 4
+    text_5: Texto 5
+    date_1: Fecha 1
+    date_1_inline_help: e.g. YYYY-MM-DD
+    date_2: Fecha 2
+    date_2_inline_help: e.g. YYYY-MM-DD
+    date_3: Fecha 3
+    date_3_inline_help: e.g. YYYY-MM-DD
+    enum_1: Valor controlado 1
+    enum_2: Valor controlado 2
+    enum_3: Valor controlado 3
+    enum_4: Valor controlado 4
+    _singular: Definido por el usuario
+    _plural: Definido por los usuarios
+	
   content_items: 
     content: Contenido
     content_tooltip: |
@@ -43,6 +75,8 @@
 
   digital_object: &digital_object_attributes
     <<: *section_tooltips
+    user_defined: 
+      <<: *user_defined_attributes
     title: Título
     title_tooltip: |
         <p>Una expresión de título para el objeto digital.  Puede ser transcrito desde el objeto, heredada de un registro de componente fuente recursos/recursos o proporcionados por el repositorio.</p>
@@ -206,6 +240,10 @@
         <p>Las Autoridades pueden consultarse utilizando Autocompletar, usando una función de navegación, o pueden crearse en la demanda.</p>
     terms: Términos
     title: Título
+    title_tooltip: |
+        <p>Campo opcional: Guarda aquí el título de una de sus obras para crear una autoridad con encabezamiento de título enlazado a su autor o materia</p>
+        <p>Por ejemplo,</p>
+        <ul><li>Shakespeare, William, 1564-1616. King Lear</li><li> Pound, Ezra, 1885-1972. Cantos</li><li> Lincoln, Abraham, 1809-1865. Emancipation Proclamation</li></ul>
     _singular: Autoridad enlazada
     _plural: Autoridades enlazadas
 
@@ -521,11 +559,7 @@
     post_code_tooltip: |
         <p>Correo electrónico o código postal de la dirección de la persona de contacto.</p>
     telephone: Teléfono
-    telephone_tooltip: |
-        <p>Número de teléfono de la persona de contacto.</p>
     telephone_ext: Extensión telefónica
-    telephone_ext_tooltip: |
-        <p>Extensión del número telefónico de la persona de contacto.</p>
     fax: Fax
     fax_tooltip: |
         <p>Número de fax para la persona de contacto.</p>
@@ -540,6 +574,16 @@
         <p>Notas adicionales o información de contacto de la persona de contacto.</p>
     _singular: Contacto
     _plural: Los datos de contacto
+ 
+   telephone: &telephone
+    _plural: Números de teléfono
+    number_type: Tipo de número
+    number: Número
+    number_tooltip: |
+        <p>Número de teléfono de la persona de contacto.</p>
+    ext: Extension telefónica
+    ext_tooltip: |
+        <p>Extensión del número de teléfono de la persona de contacto.</p>
 
   note_attributes: &note_attributes
     label: Etiqueta
@@ -1042,6 +1086,8 @@
 
   accession: 
     <<: *section_tooltips
+    user_defined: 
+      <<: *user_defined_attributes 
     accession_date: Fecha de entrada
     accession_date_inline_help: por ejemplo AAAA-MM-DD
     accession_date_tooltip: |
@@ -1357,6 +1403,8 @@
   resource:
     <<: *archival_object_attributes
     <<: *section_tooltips
+    user_defined:
+       <<: *user_defined_attributes
     id_0: Identificador
     id_0_tooltip: |
         <p>REQUIRED FIELD. The identification number assigned to each discrete Resource within a Repository.</p>
@@ -1411,6 +1459,7 @@
         <li>Inventario de los documentos de la familia de Reese</li>
         <li>Lista de los dibujos y modelos de la firma arquitectónica Simon y Simon</li>
         </ul>
+    finding_aid_subtitle: Subtítulo del finding aid
     finding_aid_filing_title: Título formal del finding aid
     finding_aid_filing_title_tooltip: |
         <p>Una versión modificada del título formal de la ayuda del hallazgo. Diseñado para facilitar la navegación y la clasificación de encontrar ayuda título listas.</p>
@@ -1442,12 +1491,6 @@
     finding_aid_series_statement: Declaración de serie
     finding_aid_series_statement_tooltip: |
         <p>Indica que cualquier serie bibliográfica a la que pertenece el hallazgo ayuda.</p>
-    finding_aid_revision_date: Fecha de revisión
-    finding_aid_revision_date_tooltip: |
-        <p>Especifica la fecha de que la ayuda del hallazgo fue última revisión.</p>
-    finding_aid_revision_description: Descripción de la revisión
-    finding_aid_revision_description_tooltip: |
-        <p>El último número de revisión hecho para ayudar a encontrar una descripción.</p>
     finding_aid_status: Estado del finding aid
     finding_aid_status_tooltip: |
         <p>Indica el estado de la ayuda del hallazgo.</p>
@@ -1460,6 +1503,16 @@
   related_accession: 
     _singular: Acta de ingreso relacionada
     _plural: Actas de ingreso relacionadas
+
+  revision_statement:
+    _singlular: Revision Statement
+    _plural: Revision Statements
+    date: Revision Date
+    date_tooltip: |
+        <p>Specifies the date the finding aid was last revised.</p>
+    description: Revision Description
+    description_tooltip: |
+        <p>A description of the last revision(s) done to the finding aid.</p>
 
   related_resource: 
     _singular: Fondos relacionados
@@ -1616,7 +1669,7 @@
         <ul>
         <li>Número de registro del Catálogo</li>
         </ul>
-    processing_hours_per_foot_estimate: Procesamiento estimación hrs/ft
+    processing_hours_per_foot_estimate: Procesamiento estimación hrs/unidades
     processing_hours_per_foot_estimate_tooltip: |
         <p>El tiempo un repositorio estima que es necesaria para procesar una unidad de material de archivo (por ejemplo un pie lineal o un elemento en el caso de objetos digitales).  La estimación posible factor, o no, la producción de encontrar SIDA, registros del catálogo y otros productos de acceso.</p>
     processing_total_extent: Extensión total de procesamiento
@@ -1638,7 +1691,7 @@
         <li>Los estudiantes de Margaret creará registros descriptivos.</li>
         <li>Gerente de proyecto será revisar, salida y cargar la ayuda encontrar codificados.</li>
         </ul>
-    processing_priority: Prioridad
+    processing_priority: Prioridad para su procesamiento
     processing_priority_tooltip: |
         <p>Indica la prioridad asignada a la elaboración de una unidad de archivo.</p>
         <p>Los valores en esta lista de valores controlados pueden ser modificados.</p>
@@ -1674,38 +1727,6 @@
     _singular: Gestión de la colección
     _plural: Gestión de las colecciones
 
-  user_defined: 
-    boolean_1: Boolean 1
-    boolean_2: 2 booleano
-    boolean_3: 3 booleanos
-    integer_1: Entero 1
-    integer_2: Entero 2
-    integer_3: Entero 3
-    real_1: 1 real
-    real_2: 2 real
-    real_3: 3 reales
-    string_1: Cadena 1
-    string_2: Cadena 2
-    string_3: Cadena 3
-    string_4: Cadena 4
-    text_1: Texto 1
-    text_2: Texto 2
-    text_3: Texto 3
-    text_4: Texto 4
-    text_5: Texto 5
-    date_1: Fecha 1
-    date_1_inline_help: por ejemplo AAAA-MM-DD
-    date_2: Fecha 2
-    date_2_inline_help: por ejemplo AAAA-MM-DD
-    date_3: Fecha 3
-    date_3_inline_help: por ejemplo AAAA-MM-DD
-    enum_1: Valor controlado 1
-    enum_2: Valor controlado 2
-    enum_3: Valor controlado 3
-    enum_4: Valor controlado 4
-    _singular: Definidos por el usuario
-    _plural: Definidos por el usuario
-
   enumeration: 
     # tooltips not displaying: 
     name: Nombre
@@ -1716,6 +1737,9 @@
         <p>El valor de la lista de valores controlados que desee agregar o editar.</p>
         <p>Siempre que sea posible, los valores deben ser en minúscula y tener caracteres de subrayado ("_") en vez de espacios. Traducciones para los valores se deben agregar al archivo locales.</p>
     translation: Traducción
+    position: Posición
+    suppress: Bloquear
+    unsuppress: Desbloquear
     merge_into: Combinar en
     _singular: Lista de valores controlados
     _plural: Listas de valor controladas
@@ -1756,6 +1780,8 @@
     show_suppressed_tooltip: Si se muestran registros bloqueados que tiene permiso para ver al navegar.
     publish: ¿Publicar?
     publish_tooltip: Si desea publicar nuevos registros por defecto.
+    default_values: ¿Pre-popular registros?
+    default_values_tooltip: Si quiere pre-popular un nuevo Fondo o Acta de ingreso
     accession_browse_section: Navegar columnas de entrada
     accession_browse_column_1: Columna 1
     accession_browse_column_1_tooltip: El campo para mostrar en la columna 1.
@@ -1842,7 +1868,8 @@
     location_cannot_be_deleted_if_linked: Ubicación actualmente está vinculada a uno o más registros de representación y no puede ser bloqueado. Por favor, enlace estas instancias a nuevas ubicaciones antes de eliminar el registro del lugar.
     cannot_be_previous_if_location_is_not_temporary: No se puede transferir a la anterior si la situación es temporal. 
     authority_id_must_be_unique: Identificador de autoridad ya está en uso
-    either_type_1_or_barcode_is_required: Un envase debe contener 1 tipo de envase o código de barras. 
+    either_type_1_or_barcode_is_required: Un envase debe contener 1 tipo de envase o código de barras.
+    must_be_a_number_with_no_more_than_nine_digits_and_five_decimal_places: Debe ser un número con no más de 9 dígitos y 5 decimales. 	
 
   job:
     _singular: Tarea en el background
@@ -1913,3 +1940,6 @@
     frontend_log: Registro de frontend
     backend_info: Información del sistema de back-end
     backend_log: Registro de backend
+
+   resource_component:
+   _singular: Componente de recurso
