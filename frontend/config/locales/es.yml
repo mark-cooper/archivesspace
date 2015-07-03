@@ -187,8 +187,8 @@
     level: Nivel de Descripción
     language: Idioma
     restrictions: Restricciones
-    ead_id: ID DE EAD
-    finding_aid_status: Estado del finding aid
+    ead_id: Identificador EAD
+    finding_aid_status: Estado del instrumento de descripción
     digital_object_id: ID de objeto digital
     digital_object_type: Tipo de objeto digital
     publish: Publicar
@@ -293,8 +293,8 @@
   linker:
     link_to_prefix: Enlace a
     create_and_link_to_prefix: Crear y vincular
-    hint_text: Tipo para buscar registros disponibles...
-    placeholder: Tipo para buscar registros disponibles...
+    hint_text: Empieza a escribir para buscar registros disponibles...
+    placeholder: Empieza a escribir para buscar registros disponibles...
     no_results: No hay resultados coincidentes.  Trate de 'Examinar'.
     searching: Buscando...
     delete: "x"
@@ -751,7 +751,7 @@
         suppressed_info: Se suprimieron y no se pueden editar fondos
       section:
         basic_information: Información básica
-        finding_aid: Datos del finding aid
+        finding_aid: Datos del instrumento de descripción
       action:
         add_child: Agregar hijo
         rapid_data_entry: Entrada de datos rápida
@@ -790,7 +790,7 @@
         please_select_a_subject_to_merge: Por favor, seleccione un materia
       section:
         basic_information: Información básica
-        terms: Términos y subdivisiones
+        terms: Descriptores
         search_embedded: Registros vinculados
       action:
         create: Crear materia
