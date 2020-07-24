@@ -238,7 +238,7 @@ class ArchivalObjectsController < ApplicationController
           @children.save(:archival_object_id => @parent.id)
         end
 
-        return render :text => I18n.t("rde.messages.success")
+        return render :plain => I18n.t("rde.messages.success")
       rescue JSONModel::ValidationException => e
         @exceptions = @children.children.collect{|c| JSONModel(:archival_object).from_hash(c, false)._exceptions}
         
