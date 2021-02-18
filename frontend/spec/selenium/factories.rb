@@ -200,10 +200,15 @@ module SeleniumFactories
         qualifier { generate(:alphanumstr) }
       end
 
+      factory :agent_contact, class: JSONModel(:agent_contact) do
+        name { generate(:generic_name) }
+      end
+
       factory :agent_person, class: JSONModel(:agent_person) do
         agent_type { 'agent_person' }
         names { [build(:name_person)] }
         dates_of_existence { [build(:date, label: 'existence')] }
+        agent_contacts { [build(:agent_contact)] }
       end
 
       factory :subject, class: JSONModel(:subject) do
