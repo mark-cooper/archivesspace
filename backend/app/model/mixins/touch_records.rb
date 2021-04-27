@@ -45,10 +45,13 @@ module TouchRecords
 
     def touch(obj)
       return unless obj.class.respond_to? :touch_records
+
       records = obj.class.touch_records(obj)
+
       return unless records.any?
+
       records.each do |record_set|
-        record_set[:type].update_mtime_for_ids(record_set[:ids])
+        record_set[:type].update_mtime_for_ids(record_set[:ids].compact)
       end
     end
 

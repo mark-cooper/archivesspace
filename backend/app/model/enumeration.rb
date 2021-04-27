@@ -57,8 +57,13 @@ class Enumeration < Sequel::Model(:enumeration)
     dependants = self.class.dependants_of(self.name) ? self.class.dependants_of(self.name) : []
     dependants.each do |definition, model|
       property_id = "#{definition[:property]}_id".intern
-      model.filter(property_id => old_enum_value.id).update(property_id => new_enum_value.id,
-                                                            :system_mtime => Time.now)
+      model.filter(property_id => old_enum_value.id).each do |rec|
+        rec.update(property_id => new_enum_value.id, :system_mtime => Time.now)
+        next unless model.respond_to? :touch_records
+
+        # trigger touch to reindex related records
+        model[rec.id].update_from_json(model.to_jsonmodel(rec.id))
+      end
     end
 
     old_enum_value.delete
