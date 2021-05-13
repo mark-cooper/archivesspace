@@ -79,10 +79,8 @@ module TestUtils
     if ENV['ASPACE_TEST_SOLR_URL']
       java_opts +=
         " -Daspace.config.solr_url=#{ENV['ASPACE_TEST_SOLR_URL']}"
-    elsif config[:solr_port]
-      java_opts +=
-        " -Daspace.config.solr_url=http://localhost:#{config[:solr_port]}"
-      build_args.push("-Daspace.solr.port=#{config[:solr_port]}")
+    else
+      raise "ASPACE_TEST_SOLR_URL variable is required but not set"
     end
     [java_opts, build_args]
   end
