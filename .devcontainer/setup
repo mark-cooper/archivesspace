@@ -1,0 +1,13 @@
+#!/bin/bash
+
+set -eu
+
+echo "Downloading MySQL connector"
+wget https://repo1.maven.org/maven2/mysql/mysql-connector-java/8.0.23/mysql-connector-java-8.0.23.jar && mv mysql-connector-java-8.0.23.jar ./common/lib/
+
+echo "Copying pre-bootstrapped build directory"
+cd build && rm -rf .bundle/ .gem/ gems/ *.jar *.war && cd ..
+cp -r /build/* build/
+
+echo "Running database migrations"
+./build/run db:migrate

@@ -1,0 +1,9 @@
+{
+  "name": "ArchivesSpace",
+  "dockerComposeFile": ["../docker-compose-dev.yml", "docker-compose.yml"],
+  "service": "app",
+  "workspaceFolder": "/workspace/archivesspace",
+  "shutdownAction": "stopCompose",
+  "forwardPorts": [2999,3000,3001,3306,3307,4567,8983,8984],
+  "postCreateCommand": "bash .devcontainer/setup"
+}

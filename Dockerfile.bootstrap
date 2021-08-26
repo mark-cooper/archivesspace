@@ -1,0 +1,32 @@
+FROM ubuntu:20.04 as build_dev
+# docker build -t archivesspace/archivesspace:bootstrap-$(git rev-parse --short HEAD) -f Dockerfile.bootstrap .
+# docker tag archivesspace/archivesspace:bootstrap-$(git rev-parse --short HEAD) archivesspace/archivesspace:bootstrap-latest
+
+ENV DEBIAN_FRONTEND=noninteractive \
+    TZ=UTC
+
+RUN apt-get update && \
+    apt-get -y install --no-install-recommends \
+        build-essential \
+        curl \
+        firefox \
+        git \
+        netcat \
+        openjdk-11-jre-headless \
+        shared-mime-info \
+        supervisor \
+        wget \
+        unzip && \
+    git clone --branch master --single-branch https://github.com/archivesspace/archivesspace.git /source && \
+    wget https://github.com/mozilla/geckodriver/releases/download/v0.29.1/geckodriver-v0.29.1-linux64.tar.gz && \
+    tar -zxvf geckodriver-v0.29.1-linux64.tar.gz && \
+    mv geckodriver /usr/local/bin
+
+WORKDIR /source
+
+RUN ./build/run bootstrap && \
+    mkdir /build && \
+    cp -r ./build/gems/ /build/ && \
+    cp ./build/*.jar /build/ && \
+    cp ./build/*.war /build/ && \
+    rm -rf /source

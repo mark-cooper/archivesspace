@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  app:
+    image: archivesspace/archivesspace:bootstrap-latest
+    env_file:
+      - .env.dev
+    volumes:
+      - .:/workspace/archivesspace:cached
+    command: sleep infinity
+    network_mode: host
+    depends_on:
+      db1:
+        condition: service_healthy

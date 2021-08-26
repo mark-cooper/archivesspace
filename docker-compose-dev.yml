@@ -7,14 +7,18 @@ services:
   db1:
     container_name: as_dev_db
     image: mysql:8.0
+    platform: linux/x86_64
     command: --character-set-server=UTF8MB4 --innodb_buffer_pool_size=2G --innodb_buffer_pool_instances=2 --log_bin_trust_function_creators=1
     ports:
       - "3306:3306"
     env_file:
       - .env.docker.db
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -u $$MYSQL_USER --password=$$MYSQL_PASSWORD
   db2:
     container_name: as_test_db
     image: mysql:8.0
+    platform: linux/x86_64
     command: --character-set-server=UTF8MB4 --innodb_buffer_pool_size=2G --innodb_buffer_pool_instances=2 --log_bin_trust_function_creators=1
     ports:
       - "3307:3306"
