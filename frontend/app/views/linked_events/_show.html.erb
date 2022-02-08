@@ -28,9 +28,15 @@
               </td>
               <td>
                 <% record['linked_records'].each do |link| %>
-                  <div><%= I18n.t("enumerations.linked_event_archival_record_roles.#{link['role']}", :default => link['role']) %>:
-                    <%= link['_resolved']['display_string'] || link['_resolved']['title'] %>
-                  </div>
+                  <% unless @event_hits > AppConfig[:max_linked_events_to_resolve] %>
+                    <div><%= I18n.t("enumerations.linked_event_archival_record_roles.#{link['role']}", :default => link['role']) %>:
+                      <%= link['_resolved']['display_string'] || link['_resolved']['title'] %>
+                    <div>
+                  <% else %>
+                    <div>
+                      <%= I18n.t("enumerations.linked_event_archival_record_roles.#{link['role']}", :default => link['role']) %>
+                    </div>
+                  <% end %>
                 <% end %>
               </td>
               <td><%= display_audit_info(record, :format => 'compact') %></td>

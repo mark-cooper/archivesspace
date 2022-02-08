@@ -33,7 +33,9 @@ class ResourcesController < ApplicationController
     flash.keep
 
     if params[:inline]
-      @resource = fetch_resolved(:resource, params[:id])
+      @event_hits = fetch_linked_events_count(:resource, params[:id])
+      excludes = @event_hits > AppConfig[:max_linked_events_to_resolve] ? ['linked_events', 'linked_events::linked_records'] : []
+      @resource = fetch_resolved(:resource, params[:id], excludes: excludes)
 
       flash.now[:info] = I18n.t("resource._frontend.messages.suppressed_info", JSONModelI18nWrapper.new(:resource => @resource).enable_parse_mixed_content!(url_for(:root))) if @resource.suppressed
       return render_aspace_partial :partial => "resources/show_inline"

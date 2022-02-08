@@ -29,7 +29,9 @@ class AccessionsController < ApplicationController
   end
 
   def show
-    @accession = fetch_resolved(:accession, params[:id])
+    @event_hits = fetch_linked_events_count(:accession, params[:id])
+    excludes = @event_hits > AppConfig[:max_linked_events_to_resolve] ? ['linked_events', 'linked_events::linked_records'] : []
+    @accession = fetch_resolved(:accession, params[:id], excludes: excludes)
 
     @accession['accession_date'] = I18n.t('accession.accession_date_unknown') if @accession['accession_date'] == "9999-12-31"
 

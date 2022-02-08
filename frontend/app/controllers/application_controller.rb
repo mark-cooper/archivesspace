@@ -218,6 +218,15 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  # could be generalized further by accepting related_type [ex: event] and related_field [ex: linked_record_uris]
+  def fetch_linked_events_count(type, id)
+    uri = JSONModel(type).uri_for(id)
+    @search_data = Search.for_type(session[:repo_id], "event", params_for_backend_search.merge(
+      {"facet[]" => SearchResultData.EVENT_FACETS, "q" => "linked_record_uris:\"#{uri}\"", "fields[]" => "id"}
+    ))
+    return @search_data['total_hits']
+  end
+
   def fetch_resolved(type, id, excludes: [])
     # We add this so that we can get a top container location to display with the instance view
     new_find_opts = find_opts
