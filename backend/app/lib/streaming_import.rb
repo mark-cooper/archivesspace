@@ -72,12 +72,20 @@ class StreamingImport
     finished = true
 
     begin
+      with_status("Creating global records") do
+        create_global_records(['subject', 'container_profile', 'location_profile'], with_rlshp: true)
+        create_global_records(
+          ['agent_corporate_entity', 'agent_family', 'agent_person', 'agent_software', 'location'], with_rlshp: false
+        )
+      end
+
       with_status("Looking for cyclic relationships") do
         uris_causing_cycles = []
 
-        CycleFinder.new(@dependencies, @ticker).each do |cycle_uri|
-          uris_causing_cycles << cycle_uri unless uris_causing_cycles.include?(cycle_uri)
-        end
+        # We'll skip this because we're not using it anyway (we're de-optimizing 'cus issues)
+        # CycleFinder.new(@dependencies, @ticker).each do |cycle_uri|
+        #   uris_causing_cycles << cycle_uri unless uris_causing_cycles.include?(cycle_uri)
+        # end
 
         create_records_without_relationships(uris_causing_cycles)
       end
@@ -257,18 +265,35 @@ class StreamingImport
   end
 
 
+  # Forcing these suckers 1st seems to fix things for some batches
+  def create_global_records(types, with_rlshp: true)
+    if with_rlshp
+      @jstream.each do |rec|
+        next unless types.include?(rec['jsonmodel_type'])
+
+        @logical_urls[rec['uri']] = do_create(rewrite(rec, @logical_urls))
+        @jstream.delete_current
+      end
+    else
+      create_records_without_relationships(types)
+    end
+  end
+
+
   # Create a selection of records (identified by URI) that are known to cause
   # dependency cycles.  We detach their relationships with other records and
   # reattach them at the end.
   #
   # This gets us around chicken-and-egg problems of two records with mutual
   # relationships.
-  def create_records_without_relationships(record_uris)
+  # Note: we're still doing this ^ but identified by jsonmodel_type (or all)
+  def create_records_without_relationships(jsonmodel_types)
     @jstream.each do |rec|
       uri = rec['uri']
-      next unless record_uris.include?(uri)
+      # next unless record_uris.include?(uri) # this is de-optimization but working, shrug
+      next unless jsonmodel_types.include?(rec['jsonmodel_type']) if jsonmodel_types.any?
 
-      missing_dependencies = @dependencies[uri].reject {|d| @logical_urls[d]}
+      missing_dependencies = @dependencies[uri].reject {|d| @logical_urls[d]}.uniq
 
       if !missing_dependencies.empty?
         rec.keys.each do |k|
