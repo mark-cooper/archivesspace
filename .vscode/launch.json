@@ -1,0 +1,39 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Backend",
+      "type": "Ruby",
+      "request": "attach",
+      "remoteHost": "127.0.0.1",
+      "remotePort": "1234",
+      "remoteWorkspaceRoot": "${workspaceRoot}"
+    },
+    {
+      "name": "Frontend",
+      "type": "Ruby",
+      "request": "attach",
+      "remoteHost": "127.0.0.1",
+      "remotePort": "1235",
+      "remoteWorkspaceRoot": "${workspaceRoot}"
+    },
+    {
+      "name": "Public",
+      "type": "Ruby",
+      "request": "attach",
+      "remoteHost": "127.0.0.1",
+      "remotePort": "1236",
+      "remoteWorkspaceRoot": "${workspaceRoot}"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "ArchivesSpace devservers",
+      "configurations": ["Backend", "Frontend", "Public"],
+      "stopAll": true
+    }
+  ]
+}

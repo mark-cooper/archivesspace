@@ -1,0 +1,9 @@
+include:
+  - "**/*.rb"
+exclude:
+  - ".bundle/**/*"
+  - "*/spec/**/*"
+  - "build/**/*"
+  - "docs/**/*"
+  - "scripts/**/*"
+  - "supervisord/*"

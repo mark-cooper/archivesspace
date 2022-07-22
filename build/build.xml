@@ -93,7 +93,7 @@
         <env key="APPCONFIG_DATA_DIRECTORY" value="${aspace.data_directory.dev}" />
         <env key="APPCONFIG_DB_URL" value="${env.APPCONFIG_DB_URL}" />
         <env key="APPCONFIG_SOLR_URL" value="${env.APPCONFIG_SOLR_URL}" />
-        <arg line="app/main.rb ${aspace.backend.port}" />
+        <arg line="../build/${jruby_build_bin_path}/rdebug-ide --host 0.0.0.0 --port 1234 -- app/main.rb ${aspace.backend.port}" />
       </java>
       <record name="backend_test_log.out" action="stop" />
     </parallel>
@@ -211,6 +211,11 @@
     </antcall>
     <antcall target="bundler">
       <param name="gemfile" value="../oai/Gemfile" />
+    </antcall>
+    <antcall target="bundler">
+      <param name="gemfile" value="../Gemfile" />
+      <param name="included-gem-groups" value="debug" />
+      <param name="excluded-gem-groups" value="default" />
     </antcall>
   </target>
 
@@ -668,7 +673,7 @@
       <env key="APPCONFIG_DATA_DIRECTORY" value="${aspace.data_directory.dev}" />
       <env key="APPCONFIG_DB_URL" value="${env.APPCONFIG_DB_URL}" />
       <env key="APPCONFIG_SOLR_URL" value="${env.APPCONFIG_SOLR_URL}" />
-      <arg line="script/rails s mizuno -b 0.0.0.0 --port=${aspace.frontend.port}" />
+      <arg line="../build/${jruby_build_bin_path}/rdebug-ide --host 0.0.0.0 --port 1235 -- script/rails s mizuno -b 0.0.0.0 --port=${aspace.frontend.port}" />
     </java>
     <record name="frontend_test_log.out" action="stop" />
   </target>
@@ -782,7 +787,7 @@
       <env key="APPCONFIG_DATA_DIRECTORY" value="${aspace.data_directory.dev}" />
       <env key="APPCONFIG_DB_URL" value="${env.APPCONFIG_DB_URL}" />
       <env key="APPCONFIG_SOLR_URL" value="${env.APPCONFIG_SOLR_URL}" />
-      <arg line="bin/rails s mizuno -b 0.0.0.0 --port=${aspace.public.port}" />
+      <arg line="../build/${jruby_build_bin_path}/rdebug-ide --host 0.0.0.0 --port 1236 -- bin/rails s mizuno -b 0.0.0.0 --port=${aspace.public.port}" />
     </java>
   </target>
 
