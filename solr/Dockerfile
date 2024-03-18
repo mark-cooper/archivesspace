@@ -1,4 +1,4 @@
-FROM solr:8.10
+FROM solr:8.11.3
 LABEL maintainer="ArchivesSpaceHome@lyrasis.org"
 
 ENV ARCHIVESSPACE_CONFIGSET_PATH=/opt/solr/server/solr/configsets/archivesspace/conf
