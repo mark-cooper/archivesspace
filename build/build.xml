@@ -2,13 +2,13 @@
 
 <project name="ArchivesSpace" default="help">
 
-  <property name="jruby_url" value="https://repo1.maven.org/maven2/org/jruby/jruby-complete/9.1.17.0/jruby-complete-9.1.17.0.jar" />
-  <property name="jruby_file" value="jruby-complete-9.1.17.0.jar" />
+  <property name="jruby_url" value="https://repo1.maven.org/maven2/org/jruby/jruby-complete/9.2.12.0/jruby-complete-9.2.12.0.jar" />
+  <property name="jruby_file" value="jruby-complete-9.2.12.0.jar" />
 
   <property name="solr_url" value="http://repo1.maven.org/maven2/org/apache/solr/solr/4.10.4/solr-4.10.4.war" />
   <property name="solr_file" value="solr-4.10.4.war" />
 
-  <property name="jettyrunner_url" value="http://central.maven.org/maven2/org/eclipse/jetty/jetty-runner/9.2.22.v20170606/jetty-runner-9.2.22.v20170606.jar" />
+  <property name="jettyrunner_url" value="https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-runner/9.2.22.v20170606/jetty-runner-9.2.22.v20170606.jar" />
   <property name="jettyrunner_file" value="jetty-runner-9.2.22.v20170606.jar" />
 
   <property name="gem_home" location="gems" />
@@ -62,7 +62,7 @@
     </delete>
 
     <get src="${jruby_url}" dest="${jruby_file}" skipexisting="true" verbose="true" usetimestamp="true" />
-    <get src="${solr_url}" dest="${solr_file}" skipexisting="true" verbose="true" usetimestamp="true" />
+    <!-- <get src="${solr_url}" dest="${solr_file}" skipexisting="true" verbose="true" usetimestamp="true" /> -->
     <get src="${jettyrunner_url}" dest="${jettyrunner_file}" skipexisting="true" verbose="true" usetimestamp="true" />
   </target>
 
@@ -349,12 +349,12 @@
   </target>
 
 
-  <target name="solr:war" depends="set-classpath, bootstrap-downloads" description="Repack the Solr .war file with our configs">
+  <!-- <target name="solr:war" depends="set-classpath, bootstrap-downloads" description="Repack the Solr .war file with our configs">
     <copy file="${solr_file}" tofile="solr.war" overwrite="true" />
     <war destfile="solr.war" update="true">
       <zipfileset dir="../solr" prefix="WEB-INF/classes"/>
     </war>
-  </target>
+  </target> -->
 
 
   <!-- OAI -->
@@ -698,7 +698,7 @@
       <fileset dir="../common/lib" />
     </copy>
 
-    <copy file="solr.war" todir="target/archivesspace/wars" />
+    <!-- <copy file="solr.war" todir="target/archivesspace/wars" /> -->
     <copy file="../backend/backend.war" todir="target/archivesspace/wars" />
     <copy file="../frontend/frontend.war" todir="target/archivesspace/wars" />
     <copy file="../public/public.war" tofile="target/archivesspace/wars/public.war" />
@@ -794,7 +794,7 @@
     <antcall target="backend:war"><param name="excluded-gem-groups" value="test development doc" /></antcall>
     <antcall target="frontend:war"><param name="excluded-gem-groups" value="test development doc" /></antcall>
     <antcall target="public:war"><param name="excluded-gem-groups" value="test development doc" /></antcall>
-    <antcall target="solr:war"><param name="excluded-gem-groups" value="test development doc" /></antcall>
+    <!-- <antcall target="solr:war"><param name="excluded-gem-groups" value="test development doc" /></antcall> -->
     <antcall target="indexer:war"><param name="excluded-gem-groups" value="test development doc" /></antcall>
     <antcall target="build-zip"><param name="excluded-gem-groups" value="test development doc" /></antcall>
   </target>
@@ -827,7 +827,7 @@
     <antcall target="indexer:test" />
     <antcall target="frontend:test"/>
     <antcall target="common:test" />
-    <antcall target="public:test" />    
+    <antcall target="public:test" />
   </target>
 
 
@@ -919,7 +919,7 @@
       <arg line="gems/bin/rubocop ../backend" />
     </java>
   </target>
-  
+
   <target name="staff:cop" depends="set-classpath" description="Run rubocop against staff interface" >
     <property name="build.home" location="."/>
     <java classpath="${jruby_classpath}" classname="org.jruby.Main" fork="true" failonerror="true">
@@ -931,7 +931,7 @@
       <arg line="gems/bin/rubocop ../frontend" />
     </java>
   </target>
-  
+
   <target name="indexer:cop" depends="set-classpath" description="Run rubocop against indexer code" >
     <property name="build.home" location="."/>
     <java classpath="${jruby_classpath}" classname="org.jruby.Main" fork="true" failonerror="true">
@@ -946,7 +946,7 @@
 
 
 
-  <!-- Packaging --> 
+  <!-- Packaging -->
 
   <target name="public:war" depends="set-classpath, public:clean, public:copy-shared-resources" description="Deploy the public application as a .war file">
    <echo message="Precompiling Rails assets for Public (this can take a little while...)" />
