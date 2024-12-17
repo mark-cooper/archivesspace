@@ -311,7 +311,12 @@ class ApplicationController < ActionController::Base
   end
 
   def set_user_repository_cookie(repository_uri)
-    cookies[user_repository_cookie_key] = repository_uri
+    cookies[user_repository_cookie_key] = {
+      value: repository_uri,
+      httponly: true,
+      secure: Rails.env.production?,
+      samesite: :lax
+    }
   end
 
   # sometimes we get exceptions that look like this: "translation missing: validation_errors.protected_read-only_list_#/dates_of_existence/0/date_type_structured._invalid_value__add_or_update_either_a_single_or_ranged_date_subrecord_to_set_.__must_be_one_of__single__range
@@ -384,7 +389,7 @@ class ApplicationController < ActionController::Base
 
     return false if !context.session || !context.session[:user]
 
-    permissions_s = context.send(:cookies).signed[:archivesspace_permissions]
+    permissions_s = context.send(:cookies).signed[:archivesspace_permissions][:value]
 
     if permissions_s
       # Putting this check in for backwards compatibility with the uncompressed
