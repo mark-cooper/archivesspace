@@ -3,6 +3,7 @@
 source 'https://rubygems.org'
 
 gem 'rails', '6.1.6'
+gem 'dalli'
 
 # For handling HTML enities when processing exports as XML
 gem 'htmlentities'
